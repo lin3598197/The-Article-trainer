@@ -159,7 +159,8 @@ h3 {
   flex-wrap: wrap;
 }
 
-button {
+button,
+label[role="button"] {
   border: none;
   border-radius: 999px;
   padding: 0.65rem 1.25rem;
@@ -169,13 +170,15 @@ button {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-button.primary {
+button.primary,
+label[role="button"].primary {
   background: var(--accent);
   color: white;
   box-shadow: 0 8px 18px rgba(47, 111, 237, 0.35);
 }
 
-button.ghost {
+button.ghost,
+label[role="button"].ghost {
   background: transparent;
   color: var(--fg);
   border: 1px solid var(--border);
@@ -186,11 +189,13 @@ button.ghost {
   border: 2px solid #000;
 }
 
-button:hover {
+button:hover,
+label[role="button"]:hover {
   transform: translateY(-1px);
 }
 
-button:active {
+button:active,
+label[role="button"]:active {
   transform: translateY(0);
 }
 
