@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>國文課文練習工具 - 練習模式</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <button id="hamburger" class="hamburger" aria-label="開啟選單" aria-controls="mobileNav" aria-expanded="false">☰</button>
+      <h1>國文課文練習工具</h1>
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <ul>
+          <li><button class="nav-link" data-href="manage.html">課文管理</button></li>
+          <li><button class="nav-link" data-href="practice.html">練習模式</button></li>
+        </ul>
+      </nav>
+      <div id="backdrop" class="backdrop" hidden></div>
+    </header>
+
+    <main class="layout">
+      <section id="section-practice" class="card">
+        <h2>練習模式</h2>
+        <div class="field">
+          <span>選擇課文</span>
+          <select id="practiceSelect"></select>
+        </div>
+        <div class="field">
+          <span>練習選項</span>
+          <label class="option">
+            <input type="radio" name="mode" value="char" checked />
+            逐字比對
+          </label>
+          <label class="option">
+            <input type="radio" name="mode" value="full" />
+            一次全部比對
+          </label>
+        </div>
+        <label class="field inline">
+          <input type="checkbox" id="ignorePunctuation" />
+          忽略標點符號
+        </label>
+        <label class="field">
+          <span>我的背誦</span>
+          <textarea id="practiceInput" rows="8" placeholder="輸入或貼上你的背誦結果"></textarea>
+        </label>
+        <div class="actions">
+          <button id="compareButton" class="primary">開始比對</button>
+          <button id="resetButton" class="ghost">重置練習</button>
+        </div>
+        <section id="result" class="result" aria-live="polite"></section>
+      </section>
+    </main>
+
+    <template id="resultCharTemplate">
+      <div class="char-result">
+        <span class="char-result__char"></span>
+        <span class="char-result__status"></span>
+      </div>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+  </html>

@@ -1,0 +1,12 @@
+{
+  "name": "guowen-memorizer",
+  "version": "1.0.0",
+  "description": "離線國文課文背誦練習工具",
+  "type": "module",
+  "scripts": {
+    "test": "node ./tests/runTests.mjs",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "MIT"
+}

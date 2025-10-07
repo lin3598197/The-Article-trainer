@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>國文課文練習工具 - 課文管理</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="page-header">
+      <button id="hamburger" class="hamburger" aria-label="開啟選單" aria-controls="mobileNav" aria-expanded="false">☰</button>
+      <h1>國文課文練習工具</h1>
+      <nav id="mobileNav" class="mobile-nav" aria-hidden="true">
+        <ul>
+          <li><button class="nav-link" data-href="manage.html">課文管理</button></li>
+          <li><button class="nav-link" data-href="practice.html">練習模式</button></li>
+        </ul>
+      </nav>
+      <div id="backdrop" class="backdrop" hidden></div>
+    </header>
+
+    <main class="layout">
+      <section id="section-manage" class="card">
+        <h2>課文管理</h2>
+        <label class="field">
+          <span>課文標題</span>
+          <input id="titleInput" type="text" placeholder="例如：岳陽樓記" />
+        </label>
+        <label class="field">
+          <span>課文內容</span>
+          <textarea id="contentInput" rows="8" placeholder="貼上想要背誦的課文"></textarea>
+        </label>
+        <div class="actions">
+          <button id="saveButton" class="primary">儲存課文</button>
+          <button id="clearButton" class="ghost">清除輸入</button>
+        </div>
+        <p class="hint">課文會儲存在瀏覽器的本機資料中。</p>
+        <div class="saved-list">
+          <h3>已儲存的課文</h3>
+          <ul id="savedTexts"></ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js" type="module"></script>
+  </body>
+  </html>
