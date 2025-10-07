@@ -14,6 +14,9 @@ const elements = {
 	saveButton: document.querySelector("#saveButton"),
 	clearButton: document.querySelector("#clearButton"),
 	savedList: document.querySelector("#savedTexts"),
+	exportButton: document.querySelector("#exportButton"),
+	importButton: document.querySelector("#importButton"),
+	importFile: document.querySelector("#importFile"),
 	practiceSelect: document.querySelector("#practiceSelect"),
 	modeRadios: document.querySelectorAll("input[name='mode']"),
 	ignorePunctuation: document.querySelector("#ignorePunctuation"),
@@ -70,6 +73,12 @@ function init() {
 function bindEvents() {
 	if (elements.saveButton) elements.saveButton.addEventListener("click", handleSaveText);
 	if (elements.clearButton) elements.clearButton.addEventListener("click", resetEditorForm);
+	// Export / Import
+	if (elements.exportButton) elements.exportButton.addEventListener("click", handleExport);
+	if (elements.importButton && elements.importFile) {
+		elements.importButton.addEventListener("click", () => elements.importFile.click());
+		elements.importFile.addEventListener("change", handleImport);
+	}
 	if (elements.compareButton) elements.compareButton.addEventListener("click", handleCompare);
 	if (elements.resetButton) elements.resetButton.addEventListener("click", () => {
 		if (elements.practiceInput) elements.practiceInput.value = "";
@@ -262,6 +271,64 @@ function loadTexts() {
 
 function persistTexts() {
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(state.texts));
+}
+
+function handleExport() {
+	try {
+		const data = JSON.stringify({
+			version: 1,
+			exportedAt: new Date().toISOString(),
+			items: state.texts,
+		}, null, 2);
+		const blob = new Blob([data], { type: "application/json;charset=utf-8" });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = `guowen-texts-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.json`;
+		document.body.appendChild(a);
+		a.click();
+		a.remove();
+		URL.revokeObjectURL(url);
+	} catch (e) {
+		alert("匯出失敗，請稍後再試。");
+		console.error(e);
+	}
+}
+
+async function handleImport(e) {
+	const file = e.target.files && e.target.files[0];
+	if (!file) return;
+	try {
+		const text = await file.text();
+		const parsed = JSON.parse(text);
+		if (!parsed || !Array.isArray(parsed.items)) {
+			alert("檔案格式不正確。");
+			return;
+		}
+		// Merge by id; if same id exists, keep the newer updatedAt
+		const map = new Map(state.texts.map((t) => [t.id, t]));
+		for (const incoming of parsed.items) {
+			if (!incoming || !incoming.id || !incoming.title) continue;
+			const existing = map.get(incoming.id);
+			if (!existing) {
+				map.set(incoming.id, incoming);
+			} else {
+				const exTime = Date.parse(existing.updatedAt || existing.createdAt || 0) || 0;
+				const inTime = Date.parse(incoming.updatedAt || incoming.createdAt || 0) || 0;
+				map.set(incoming.id, inTime >= exTime ? incoming : existing);
+			}
+		}
+		state.texts = Array.from(map.values());
+		persistTexts();
+		if (elements.savedList) renderSavedTexts();
+		if (elements.practiceSelect) renderPracticeSelect();
+		alert("匯入完成。");
+	} catch (err) {
+		console.error(err);
+		alert("匯入失敗，請確認檔案格式。");
+	} finally {
+		e.target.value = ""; // reset for next import
+	}
 }
 
 function renderSavedTexts() {

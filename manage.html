@@ -37,6 +37,11 @@
         <p class="hint">課文會儲存在瀏覽器的本機資料中。</p>
         <div class="saved-list">
           <h3>已儲存的課文</h3>
+          <div class="actions">
+            <button id="exportButton" class="ghost">匯出 JSON</button>
+            <button id="importButton" class="ghost">匯入 JSON</button>
+            <input id="importFile" type="file" accept="application/json,.json" hidden />
+          </div>
           <ul id="savedTexts"></ul>
         </div>
       </section>
