@@ -218,7 +218,7 @@ function handleSaveText() {
 
 	persistTexts();
 	renderSavedTexts();
-	renderPracticeSelect(id);
+	if (elements.practiceSelect) renderPracticeSelect(id);
 	resetEditorForm({ keepTitle: false });
 	state.editingId = null;
 	elements.saveButton.textContent = "儲存課文";
@@ -249,7 +249,7 @@ function deleteText(id) {
 	state.texts = state.texts.filter((item) => item.id !== id);
 	persistTexts();
 	renderSavedTexts();
-	renderPracticeSelect();
+	if (elements.practiceSelect) renderPracticeSelect();
 	if (state.editingId === id) {
 		resetEditorForm();
 	}
@@ -390,6 +390,7 @@ function renderSavedTexts() {
 }
 
 function renderPracticeSelect(selectedId) {
+	if (!elements.practiceSelect) return; // Not present on this page
 	const select = elements.practiceSelect;
 	select.innerHTML = "";
 
@@ -415,9 +416,9 @@ function renderPracticeSelect(selectedId) {
 	}
 
 	const hasTexts = state.texts.length > 0;
-	elements.practiceInput.disabled = !hasTexts;
-	elements.resetButton.disabled = !hasTexts;
-	updateCompareButtonState();
+	if (elements.practiceInput) elements.practiceInput.disabled = !hasTexts;
+	if (elements.resetButton) elements.resetButton.disabled = !hasTexts;
+	if (elements.compareButton) updateCompareButtonState();
 }
 
 function handleCompare() {
