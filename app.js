@@ -275,6 +275,10 @@ function persistTexts() {
 
 function handleExport() {
 	try {
+		if (!state.texts || state.texts.length === 0) {
+			alert("目前沒有可匯出的課文。");
+			return;
+		}
 		const data = JSON.stringify({
 			version: 1,
 			exportedAt: new Date().toISOString(),
@@ -289,6 +293,7 @@ function handleExport() {
 		a.click();
 		a.remove();
 		URL.revokeObjectURL(url);
+		setTimeout(() => alert("已匯出 JSON 檔案。"), 0);
 	} catch (e) {
 		alert("匯出失敗，請稍後再試。");
 		console.error(e);
